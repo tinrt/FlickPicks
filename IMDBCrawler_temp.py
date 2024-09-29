@@ -5,6 +5,17 @@ import psycopg2
 import random
 from psycopg2 import Error
 
+'''
+Author: Tina Nosrati
+Last Update: 9/29/2024
+
+Description: 
+This script will Crawl movie reviews from IMDB for each movie in the table "movies"
+in database and save them in the table "reviews"
+
+'''
+
+#Several againts are randomly being used to reduce the chance of getting blocked 
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
@@ -21,6 +32,19 @@ user_agents = [
 ]
 
 
+##########get_movie_reviews##########
+'''
+Arguments:
+movie_id --> A movie id
+
+Output: a list of review for the input movie id
+
+Description: 
+This function will create a search URL based on the movie id and assign an aget for the search.
+Next, it will get the HTML content of the page to extract the text inside the div tags will calss
+'show-more__control' or 'show-more__control.clickable' and finaly return thereview text.
+
+'''
 def get_movie_reviews(movie_id):
     url = f"https://www.imdb.com/title/{movie_id}/reviews/?ref_=tt_urv"
     headers = {
@@ -35,7 +59,21 @@ def get_movie_reviews(movie_id):
     return review_texts
 
 
+##########scrape_multiple_movies##########
+'''
+Arguments:
+movie_id --> A list of movie ids
+cur --> the cursor for database
+conn --> the connection for database
 
+Output: insering reviews in the database
+
+Description: 
+This function will get the list of movie ids and the database connection,
+then call the 'get_movie_reviews' foe each id to crawl reviews and finally,
+inset each review in the 'reviews' table in database.
+
+'''
 def scrape_multiple_movies(movie_ids, cur, conn):
     for movie_id in movie_ids:
         reviews = get_movie_reviews(movie_id)
@@ -53,6 +91,8 @@ def scrape_multiple_movies(movie_ids, cur, conn):
                 continue  
 
     conn.commit()
+
+# main program
 
 try:
     conn = psycopg2.connect(

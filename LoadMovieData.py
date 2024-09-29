@@ -2,6 +2,15 @@ import pandas as pd
 import psycopg2
 from psycopg2 import sql
 
+'''
+Author: Tina Nosrati
+Last Update: 9/29/2024
+
+Description: 
+This script will load movie data to the "movies" table in database from the csv file "movies_metadata.csv"
+
+'''
+
 conn = psycopg2.connect(
     host="localhost",
     dbname="moviedata",

@@ -1,5 +1,27 @@
 import psycopg2
 
+'''
+Author: Tina Nosrati
+Last Update: 9/29/2024
+
+Description: 
+This script will create the initial tables in the database to store data for this project.
+
+Tables:
+
+movies --> contains information of movies
+
+ratings --> contains information of the ratings users submitted for movies
+['id' is the foreing key connected to 'movie_id' in the table "movies"]
+
+reviews --> contains the text data for user review on IMDB
+['movie_id' is the foreing key connected to 'movie_id' in the table "movies"] 
+
+
+'''
+
+
+
 conn = psycopg2.connect(
     host="localhost",
     dbname="moviedata",
@@ -40,18 +62,18 @@ try:
     )
     """)
 
-    # Create ratings table with foreign key to movies (id column)
+    # Create ratings table 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS ratings (
         userId INT,
         movie_id TEXT,
         rating DOUBLE PRECISION,
         timestamp BIGINT,
-        FOREIGN KEY (movie_id) REFERENCES movies(id)
+        FOREIGN KEY (movie_id) REFERENCES movies(id) 
     )
     """)
 
-    # Create reviews table with foreign key to movies (imdb_id column)
+    # Create reviews table 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS reviews (
         imdb_id TEXT,
