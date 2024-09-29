@@ -1,0 +1,7 @@
+# Ignore IMDBdata folder
+IMDBdata/
+temp/
+
+# Ignore specific CSV files
+movies_metadata.csv
+ratings.csv
