@@ -1,5 +1,13 @@
 from header import *
 
+'''
+Author: Tina Nosrati
+Last Update: 10/1/2024
+
+Description: 
+This script will develop the content based recommendation model.
+'''
+
 def call_database():
     conn = psycopg2.connect(
     host="localhost",

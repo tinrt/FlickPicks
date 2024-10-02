@@ -1,9 +1,9 @@
-# Ignore IMDBdata folder
+# Ignore
 IMDBdata/
-temp/
-
-# Ignore specific CSV files
+others/
 movies_metadata.csv
 ratings.csv
 temp.ipynb
 content_req_model.pkl
+Tina_Nosrati_Report1_9_29.pdf
+temp_user_req.ipynb
