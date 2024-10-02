@@ -5,3 +5,5 @@ temp/
 # Ignore specific CSV files
 movies_metadata.csv
 ratings.csv
+temp.ipynb
+content_req_model.pkl
