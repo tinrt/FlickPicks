@@ -1,6 +1,6 @@
 '''
 Author: Tina Nosrati
-Last Update: 10/1/2024
+Last Update: 10/5/2024
 
 '''
 
@@ -15,3 +15,4 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import pickle
 import os
+from transformers import pipeline
