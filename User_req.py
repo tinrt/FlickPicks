@@ -2,7 +2,7 @@ from header import *
 
 '''
 Author: Tina Nosrati
-Last Update: 10/5/2024
+Last Update: 10/14/2024
 
 Description: 
 This script will develop the user based recommendation model.
@@ -107,16 +107,103 @@ def get_high_rated_movie_ids(df, user_ids, exclude_movie_id=None, rating_thresho
     return filtered_df['movie_id'].head(5).tolist()
 
 
+##########find_movie_name##########
+'''
+input:
+movie_id --> id of the movie we are processing
+
+output: name of the movie
+
+Description:
+This function will return the name of the movie from
+the database using the movie id
+'''
+def find_movie_name(movie_id):
+    try:
+        conn,cur=call_database()
+        query = "SELECT * FROM movies WHERE id = %s"        
+        cur.execute(query, (str(movie_id),))  
+        rows = cur.fetchall()
+        column_names = [desc[0] for desc in cur.description]
+        df = pd.DataFrame(rows,columns=column_names)
+        return df.loc[0,'original_title']
+    except OperationalError as e:
+        print("An operational error occurred:", e)
+    except Error as e:
+        print("A database error occurred:", e)
+    finally:
+        cur.close()
+        conn.close()
+
+
+##########find_movie_id##########
+'''
+input:
+name --> name of the movie we are processing
+
+output: id of the movie
+
+Description:
+This function will return the id of the movie from
+the database using the movie name
+'''
+def find_movie_id(name):
+    try:
+        conn,cur=call_database()
+        query = "SELECT * FROM movies WHERE original_title = %s"        
+        cur.execute(query, (name,))  
+        rows = cur.fetchall()
+        column_names = [desc[0] for desc in cur.description]
+        df = pd.DataFrame(rows,columns=column_names)
+        return df.loc[0,'id']
+    except OperationalError as e:
+        print("An operational error occurred:", e)
+    except Error as e:
+        print("A database error occurred:", e)
+    finally:
+        cur.close()
+        conn.close()
+    
+
+##########recommend_movies##########
+'''
+input:
+movie_id --> id of the movie we are processing
+
+output: a list of movies recommended
+
+'''
+def recommend_movies(name):
+    movie_id=find_movie_id(name)
+    df=get_user_data()
+    df_similar_users=get_high_ratings_userid(df,movie_id)
+    top_5=get_high_rated_movie_ids(df, df_similar_users)
+    modified_list = []
+    for i in top_5:
+        if i is not None:
+            try:
+                modified_list.append(find_movie_name(i))
+            except KeyError:
+                #print(f"KeyError: Movie ID {i} not found")
+                pass
+        else:
+            #print("Invalid movie ID found in top_5 list")
+            pass
+    return modified_list
+
+
 
 # main program
 if __name__=="__main__":
-    # get rating data
-    df=get_user_data()
 
     #test
-    movie_id=100
+    #movie_id=100
+    name="Jarhead"
 
     #get recommedation
-    df_similar_users=get_high_ratings_userid(df,movie_id)
-    top_5=get_high_rated_movie_ids(df, df_similar_users)
-    print(top_5)
+    modified_list = []
+    modified_list=recommend_movies(name)
+    print(modified_list)
+
+    
+    

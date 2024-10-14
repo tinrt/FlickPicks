@@ -2,7 +2,7 @@ from header import *
 
 '''
 Author: Tina Nosrati
-Last Update: 10/13/2024
+Last Update: 10/14/2024
 
 Description: 
 This script will summarize movie reviews for a selected movie.
@@ -154,10 +154,47 @@ def clean_fullstop(text):
         cleaned_text = text
     return cleaned_text
 
-# main program
-if __name__ == "__main__":
-    # get reviews data
-    imdb_id = "tt0113987"
+##########find_movie_id##########
+'''
+input:
+name --> name of the movie we are processing
+
+output: imdb_id of the movie
+
+Description:
+This function will return the id of the movie from
+the database using the movie name
+'''
+def find_movie_id(name):
+    try:
+        conn,cur=call_database()
+        query = "SELECT * FROM movies WHERE original_title = %s"        
+        cur.execute(query, (name,))  
+        rows = cur.fetchall()
+        column_names = [desc[0] for desc in cur.description]
+        df = pd.DataFrame(rows,columns=column_names)
+        return df.loc[0,'imdb_id']
+    except OperationalError as e:
+        print("An operational error occurred:", e)
+    except Error as e:
+        print("A database error occurred:", e)
+    finally:
+        cur.close()
+        conn.close()
+    
+##########generate_movie_summary##########
+'''
+input: 
+name --> the name of the movie that we are processing
+
+output: summary of user reviews for this movie
+
+Description:
+This function will recive a movie name and generate summary
+of user review for that movie.
+'''
+def generate_movie_summary(name):
+    imdb_id=find_movie_id(name)
     reviews_df = get_reviews_for_imdb_id(imdb_id)
     reviews_df['review'] = reviews_df['review'].apply(summarize_text)
     full_text=""
@@ -165,4 +202,14 @@ if __name__ == "__main__":
         full_text=full_text + ' '+ rev
     summary = summarize_review(full_text)
     summary=clean_fullstop(summary)
+    return summary
+
+
+# main program
+if __name__ == "__main__":
+    # get reviews data
+    #imdb_id = "tt0113987"
+    name="Jarhead"
+    summary=generate_movie_summary(name)
+
     print("Summary:", summary)

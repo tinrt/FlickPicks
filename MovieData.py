@@ -44,7 +44,8 @@ This function will return a dataframe of information for a selected
 movie from the database.
 '''
 
-def get_movie_info(imdb_id):
+def get_movie_info(name):
+    imdb_id=find_movie_id(name)
     try:
         conn, cur = call_database()
         query = "SELECT * FROM movies WHERE imdb_id = %s"        
@@ -65,12 +66,41 @@ def get_movie_info(imdb_id):
         if conn:
             conn.close()
 
+##########find_movie_id##########
+'''
+input:
+name --> name of the movie we are processing
+
+output: imdb_id of the movie
+
+Description:
+This function will return the id of the movie from
+the database using the movie name
+'''
+def find_movie_id(name):
+    try:
+        conn,cur=call_database()
+        query = "SELECT * FROM movies WHERE original_title = %s"        
+        cur.execute(query, (name,))  
+        rows = cur.fetchall()
+        column_names = [desc[0] for desc in cur.description]
+        df = pd.DataFrame(rows,columns=column_names)
+        return df.loc[0,'imdb_id']
+    except OperationalError as e:
+        print("An operational error occurred:", e)
+    except Error as e:
+        print("A database error occurred:", e)
+    finally:
+        cur.close()
+        conn.close()
+
 
 # main program
 if __name__ == "__main__":
     # get movie data
-    imdb_id = "tt0113987"
-    df = get_movie_info(imdb_id)
+    #imdb_id = "tt0113987"
+    name="Jarhead"
+    df = get_movie_info(name)
     info_dict = df.iloc[0].to_dict()
     print(info_dict)
     
