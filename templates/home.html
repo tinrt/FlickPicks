@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Information</title>
+</head>
+<body>
+    <h1>Movie Information: {{ info['title'] }}</h1>
+    <ul>
+        {% for key, value in info.items() %}
+            <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Review Summary</h2>
+    <p>{{ summary }}</p>
+
+    <h2>Content-Based Recommendations</h2>
+    <ul>
+        {% for movie in content_req_list %}
+            <li>{{ movie }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>User-Based Recommendations</h2>
+    <ul>
+        {% for movie in user_req_list %}
+            <li>{{ movie }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
