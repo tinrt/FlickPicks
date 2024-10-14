@@ -6,28 +6,36 @@
     <title>Movie Information</title>
 </head>
 <body>
-    <h1>Movie Information: {{ info['title'] }}</h1>
-    <ul>
-        {% for key, value in info.items() %}
-            <li><strong>{{ key }}:</strong> {{ value }}</li>
-        {% endfor %}
-    </ul>
+    <h1>Enter Movie Name</h1>
+    <form action="/" method="post">
+        <input type="text" name="name" placeholder="Enter movie name" required>
+        <input type="submit" value="Get Movie Info">
+    </form>
 
-    <h2>Review Summary</h2>
-    <p>{{ summary }}</p>
+    {% if name %}
+        <h1>Movie Information: {{ info['title'] }}</h1>
+        <ul>
+            {% for key, value in info.items() %}
+                <li><strong>{{ key }}:</strong> {{ value }}</li>
+            {% endfor %}
+        </ul>
 
-    <h2>Content-Based Recommendations</h2>
-    <ul>
-        {% for movie in content_req_list %}
-            <li>{{ movie }}</li>
-        {% endfor %}
-    </ul>
+        <h2>Review Summary</h2>
+        <p>{{ summary }}</p>
 
-    <h2>User-Based Recommendations</h2>
-    <ul>
-        {% for movie in user_req_list %}
-            <li>{{ movie }}</li>
-        {% endfor %}
-    </ul>
+        <h2>Content-Based Recommendations</h2>
+        <ul>
+            {% for movie in content_req_list %}
+                <li>{{ movie }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>User-Based Recommendations</h2>
+        <ul>
+            {% for movie in user_req_list %}
+                <li>{{ movie }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>
