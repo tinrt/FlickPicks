@@ -2,7 +2,7 @@ from header import *
 
 '''
 Author: Tina Nosrati
-Last Update: 10/10/2024
+Last Update: 10/13/2024
 
 Description: 
 This script will summarize movie reviews for a selected movie.
@@ -29,6 +29,38 @@ def call_database():
     cur = conn.cursor()
     return conn,cur
 
+
+##########summarize_review##########
+'''
+Arguments:
+input:
+text --> string input to be summarized
+
+Output: A summary of the input text limited to 200 tokens
+
+Description: 
+This function uses a lightweight LLM to summarize a given string input.. This will be
+used for the summary of all reviews because it is caple of generating more tokens.
+'''
+
+def summarize_review(text):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model_name = "google/flan-t5-small" 
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
+    tokenized_text = tokenizer.encode(text, return_tensors="pt").to(device)
+    summary_ids = model.generate(tokenized_text,
+                                    num_beams=4,
+                                    no_repeat_ngram_size=3,
+                                    min_length=100,
+                                    max_length=200,
+                                    length_penalty=2.0,
+                                    #emperature=0.8
+                                    )
+    output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    return output
+
+
 ##########summarize_text##########
 '''
 Arguments:
@@ -48,12 +80,14 @@ def summarize_text(text):
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
     tokenized_text = tokenizer.encode(text, return_tensors="pt").to(device)
     summary_ids = model.generate(tokenized_text,
+                                    do_sample=True,
                                     num_beams=4,
                                     no_repeat_ngram_size=3,
                                     min_length=30,
                                     max_length=50,
                                     length_penalty=2.0,
-                                    temperature=0.8)
+                                    temperature=0.8
+                                    )
     output = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     return output
 
@@ -99,13 +133,36 @@ def get_reviews_for_imdb_id(imdb_id):
         if conn:
             conn.close()
 
+##########clean_fullstop##########
+'''
+Arguments:
+input:
+text --> string input to cleaned
+
+Output: A cleaned version od the text
+
+Description: 
+This function will make sure that the summary is a complete sentence and
+will end in '.'
+'''
+
+def clean_fullstop(text):
+    last_full_stop_index = text.rfind('.')
+    if last_full_stop_index != -1:
+        cleaned_text = text[:last_full_stop_index + 1]
+    else:
+        cleaned_text = text
+    return cleaned_text
+
 # main program
 if __name__ == "__main__":
     # get reviews data
-    imdb_id = "tt0113228"
+    imdb_id = "tt0113987"
     reviews_df = get_reviews_for_imdb_id(imdb_id)
     reviews_df['review'] = reviews_df['review'].apply(summarize_text)
-    
+    full_text=""
     for rev in reviews_df['review'].tolist():
-        summary = summarize_text(rev)
-        print("Summary:", summary)
+        full_text=full_text + ' '+ rev
+    summary = summarize_review(full_text)
+    summary=clean_fullstop(summary)
+    print("Summary:", summary)
