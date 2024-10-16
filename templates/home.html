@@ -3,39 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Information</title>
+    <title>FlickPicks</title>
+    <script>
+        function showLoadingMessages() {
+            const messages = [
+                "Hmm, let me brew some ideas...",
+                "Hold up, I’m spilling the tea on this movie!",
+                "People out here saying all kinds of wild stuff!",
+                "Alright, time for some math magic!",
+                "I swear, I'm just a vintage model running on dial-up.",
+                "And Tina's computer? Total nap queen over here!",
+                "This is gonna be a wild ride through the world of numbers!",
+                "Meanwhile, Tina's computer is on its third coffee break."
+            ];
+            let index = 0;
+            const loadingDiv = document.getElementById("loadingMessages");
+            const gifDiv = document.getElementById("toasterAnimation");
+            loadingDiv.innerText = ""; // Clear previous messages
+            gifDiv.style.display = "block"; // Show GIF
+            loadingDiv.style.display = "block"; // Show loading messages
+            function showNextMessage() {
+                loadingDiv.innerText = messages[index % messages.length];
+                index++;
+                setTimeout(showNextMessage, 7000);
+            }
+            showNextMessage();
+        }
+
+        function hideLoadingMessages() {
+            const loadingDiv = document.getElementById("loadingMessages");
+            const gifDiv = document.getElementById("toasterAnimation");
+            gifDiv.style.display = "none"; // Hide GIF
+            loadingDiv.style.display = "none"; // Hide loading messages
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            hideLoadingMessages();
+        });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        #toasterAnimation {
+            width: 480px;
+            height: 274px;
+            margin: 20px 0;
+        }
+        #loadingMessages {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.5rem;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"] {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+        }
+        .content {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
+            padding: 0 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter Movie Name</h1>
-    <form action="/" method="post">
-        <input type="text" name="name" placeholder="Enter movie name" required>
-        <input type="submit" value="Get Movie Info">
-    </form>
+    <div class="form-container">
+        <h1>Enter Movie Name</h1>
+        <form action="/" method="post" onsubmit="showLoadingMessages()">
+            <input type="text" name="name" placeholder="Enter movie name" required>
+            <input type="submit" value="Show me the Magic">
+        </form>
+        <div id="toasterAnimation">
+            <iframe src="https://giphy.com/embed/TFIoWBxZp2EKM38IO3" width="480" height="274" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+            
+        </div>
+        <div id="loadingMessages"></div>
+    </div>
 
-    {% if name %}
-        <h1>Movie Information: {{ info['title'] }}</h1>
-        <ul>
-            {% for key, value in info.items() %}
-                <li><strong>{{ key }}:</strong> {{ value }}</li>
-            {% endfor %}
-        </ul>
+    <div class="content">
+        {% if name %}
+            <script>hideLoadingMessages();</script>
+            <h1>Movie Information: {{ info['title'] }}</h1>
+            <ul>
+                {% for key, value in info.items() %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
 
-        <h2>Review Summary</h2>
-        <p>{{ summary }}</p>
+            <h2>Review Summary</h2>
+            <p>{{ summary }}</p>
 
-        <h2>Content-Based Recommendations</h2>
-        <ul>
-            {% for movie in content_req_list %}
-                <li>{{ movie }}</li>
-            {% endfor %}
-        </ul>
+            <h2>Content-Based Recommendations</h2>
+            <ul>
+                {% for movie in content_req_list %}
+                    <li>{{ movie }}</li>
+                {% endfor %}
+            </ul>
 
-        <h2>User-Based Recommendations</h2>
-        <ul>
-            {% for movie in user_req_list %}
-                <li>{{ movie }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+            <h2>User-Based Recommendations</h2>
+            <ul>
+                {% for movie in user_req_list %}
+                    <li>{{ movie }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
 </html>
