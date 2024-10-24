@@ -22,6 +22,11 @@
             loadingDiv.innerText = ""; // Clear previous messages
             gifDiv.style.display = "block"; // Show GIF
             loadingDiv.style.display = "block"; // Show loading messages
+
+            // Clear previous movie content
+            const contentDiv = document.getElementById("content");
+            contentDiv.innerHTML = "";
+
             function showNextMessage() {
                 loadingDiv.innerText = messages[index % messages.length];
                 index++;
@@ -100,14 +105,14 @@
             <input type="text" name="name" placeholder="Enter movie name" required>
             <input type="submit" value="Show me the Magic">
         </form>
-        <div id="toasterAnimation">
-            <iframe src="https://giphy.com/embed/TFIoWBxZp2EKM38IO3" width="480" height="274" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-            
-        </div>
+        <!-- Loading messages are placed above the GIF -->
         <div id="loadingMessages"></div>
+        <div id="toasterAnimation">
+            <iframe src="https://giphy.com/embed/l2SpZkQ0XT1XtKus0" width="480" height="269" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        </div>
     </div>
 
-    <div class="content">
+    <div id="content" class="content">
         {% if name %}
             <script>hideLoadingMessages();</script>
             <h1>Movie Information: {{ info['title'] }}</h1>
