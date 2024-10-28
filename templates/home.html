@@ -55,16 +55,10 @@
             height: 100vh;
             margin: 0;
             font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
         }
-        #toasterAnimation {
-            width: 480px;
-            height: 274px;
-            margin: 20px 0;
-        }
-        #loadingMessages {
-            font-weight: bold;
-            margin-top: 20px;
-            font-size: 1.5rem;
+        h1, h2 {
+            color: #333;
         }
         .form-container {
             display: flex;
@@ -81,26 +75,74 @@
             margin-bottom: 10px;
             padding: 10px;
             font-size: 1rem;
-            font-family: 'Roboto', sans-serif;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
         }
         input[type="submit"] {
             padding: 10px 20px;
             font-size: 1rem;
             cursor: pointer;
-            font-family: 'Roboto', sans-serif;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #loadingMessages {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        #toasterAnimation {
+            width: 480px;
+            height: 274px;
+            margin: 20px 0;
         }
         .content {
             width: 100%;
             max-width: 800px;
             margin-top: 40px;
-            padding: 0 20px;
-            font-family: 'Roboto', sans-serif;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card h2 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+        .movie-details {
+            list-style-type: none;
+            padding: 0;
+        }
+        .movie-details li {
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .recommendations {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .recommendations li {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h1>Enter Movie Name</h1>
+        <h1>You Name It</h1>
         <form action="/" method="post" onsubmit="showLoadingMessages()">
             <input type="text" name="name" placeholder="Enter movie name" required>
             <input type="submit" value="Show me the Magic">
@@ -115,29 +157,37 @@
     <div id="content" class="content">
         {% if name %}
             <script>hideLoadingMessages();</script>
-            <h1>Movie Information: {{ info['title'] }}</h1>
-            <ul>
-                {% for key, value in info.items() %}
-                    <li><strong>{{ key }}:</strong> {{ value }}</li>
-                {% endfor %}
-            </ul>
+            <div class="card">
+                <h2>Movie Information: {{ info['title'] }}</h2>
+                <ul class="movie-details">
+                    {% for key, value in info.items() %}
+                        <li><strong>{{ key }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-            <h2>Review Summary</h2>
-            <p>{{ summary }}</p>
+            <div class="card">
+                <h2>Review Summary</h2>
+                <p>{{ summary }}</p>
+            </div>
 
-            <h2>Content-Based Recommendations</h2>
-            <ul>
-                {% for movie in content_req_list %}
-                    <li>{{ movie }}</li>
-                {% endfor %}
-            </ul>
+            <div class="card">
+                <h2>Content-Based Recommendations</h2>
+                <ul class="recommendations">
+                    {% for movie in content_req_list %}
+                        <li>{{ movie }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-            <h2>User-Based Recommendations</h2>
-            <ul>
-                {% for movie in user_req_list %}
-                    <li>{{ movie }}</li>
-                {% endfor %}
-            </ul>
+            <div class="card">
+                <h2>User-Based Recommendations</h2>
+                <ul class="recommendations">
+                    {% for movie in user_req_list %}
+                        <li>{{ movie }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
     </div>
 </body>

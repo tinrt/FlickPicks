@@ -8,17 +8,23 @@ import pickle
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
+# Function to correct user input
+def correct_movie_name(movie_name):
+    return movie_name.title()
+
+@app.route('/', methods=['GET', 'POST'])
 def home():
     try:
         name = None
         info_dict, summary, content_req_list, user_req_list = None, None, None, None
 
-        if request.method == "POST":
+        if request.method == 'POST':
             # Get the movie name from the form
             name = request.form.get('name')
 
             if name:
+                # Correct the movie name format
+                name = correct_movie_name(name)
                 # Get movie info
                 df = get_movie_info(name)
 
@@ -48,7 +54,17 @@ def home():
         )
 
     except Exception as e:
-        return f"An error occurred: {e}"
+        return render_template('error.html')
 
-if __name__ == "__main__":
+# Custom error handler for 404 (Page Not Found)
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html'), 404
+
+# Custom error handler for 500 (Internal Server Error)
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('error.html'), 500
+
+if __name__ == '__main__':
     app.run(debug=True)
