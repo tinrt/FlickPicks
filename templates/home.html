@@ -211,7 +211,9 @@
 
     {% if name %}
     <div id="content" class="content">
-        <script>hideLoadingMessages();</script>
+        <script>
+            hideLoadingMessages();
+        </script>
         <div class="card">
             <h2>Movie Information: {{ info['title'] }}</h2>
             <ul class="movie-details">
