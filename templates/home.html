@@ -19,13 +19,20 @@
             let index = 0;
             const loadingDiv = document.getElementById("loadingMessages");
             const gifDiv = document.getElementById("toasterAnimation");
+            const inputGifDiv = document.getElementById("inputLoadingGif");
             loadingDiv.innerText = ""; // Clear previous messages
+
+            // Hide input GIF after submission and show loading GIF
+            inputGifDiv.style.display = "none";
             gifDiv.style.display = "block"; // Show GIF
+
             loadingDiv.style.display = "block"; // Show loading messages
 
             // Clear previous movie content
             const contentDiv = document.getElementById("content");
-            contentDiv.innerHTML = "";
+            if (contentDiv) {
+                contentDiv.innerHTML = "";
+            }
 
             function showNextMessage() {
                 loadingDiv.innerText = messages[index % messages.length];
@@ -35,18 +42,29 @@
             showNextMessage();
         }
 
+        function showInputLoadingGif() {
+            const inputGifDiv = document.getElementById("inputLoadingGif");
+            inputGifDiv.style.display = "block"; // Show input loading GIF
+        }
+
         function hideLoadingMessages() {
             const loadingDiv = document.getElementById("loadingMessages");
             const gifDiv = document.getElementById("toasterAnimation");
+            const inputGifDiv = document.getElementById("inputLoadingGif");
+
             gifDiv.style.display = "none"; // Hide GIF
+            inputGifDiv.style.display = "none"; // Hide input GIF
             loadingDiv.style.display = "none"; // Hide loading messages
         }
 
         document.addEventListener("DOMContentLoaded", function() {
             hideLoadingMessages();
+            const formInput = document.querySelector('input[type="text"]');
+            formInput.focus(); // Automatically focus on the text input field
+            showInputLoadingGif(); // Show the input GIF immediately when returning from the error page
         });
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -54,8 +72,10 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Arvo', serif;
+            background: url('starter.jpg') no-repeat center center fixed;
+            background-size: cover;
+            overflow-y: scroll;
         }
         h1, h2 {
             color: #333;
@@ -83,13 +103,13 @@
             padding: 10px 20px;
             font-size: 1rem;
             cursor: pointer;
-            background-color: #007BFF;
+            background-color: #39ac31;
             color: white;
             border: none;
             border-radius: 5px;
         }
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            background-color: #2e8b25;
         }
         #loadingMessages {
             font-weight: bold;
@@ -101,6 +121,13 @@
             width: 480px;
             height: 274px;
             margin: 20px 0;
+            display: none;
+        }
+        #inputLoadingGif {
+            width: 480px;
+            height: 362px;
+            margin: 20px 0;
+            display: none;
         }
         .content {
             width: 100%;
@@ -130,13 +157,37 @@
             margin: 5px 0;
             padding: 5px 0;
             border-bottom: 1px solid #f0f0f0;
+            color: #39ac31;
         }
         .recommendations {
             list-style-type: disc;
             margin-left: 20px;
+            color: #007BFF;
         }
         .recommendations li {
             margin: 5px 0;
+            color: #39ac31;
+        }
+        .four_zero_four_bg {
+            background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+            height: 400px;
+            background-position: center;
+        }
+        .four_zero_four_bg h1 {
+            font-size: 80px;
+        }
+        .four_zero_four_bg h3 {
+            font-size: 80px;
+        }
+        .link_404 {
+            color: #fff!important;
+            padding: 10px 20px;
+            background: #39ac31;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .contant_box_404 {
+            margin-top: -50px;
         }
     </style>
 </head>
@@ -147,6 +198,10 @@
             <input type="text" name="name" placeholder="Enter movie name" required>
             <input type="submit" value="Show me the Magic">
         </form>
+        <!-- Loading Giphy (New GIF for user input) -->
+        <div id="inputLoadingGif">
+            <iframe src="https://giphy.com/embed/xT5LMEcHRXKXpIHCCI" width="480" height="362" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        </div>
         <!-- Loading messages are placed above the GIF -->
         <div id="loadingMessages"></div>
         <div id="toasterAnimation">
@@ -154,41 +209,41 @@
         </div>
     </div>
 
+    {% if name %}
     <div id="content" class="content">
-        {% if name %}
-            <script>hideLoadingMessages();</script>
-            <div class="card">
-                <h2>Movie Information: {{ info['title'] }}</h2>
-                <ul class="movie-details">
-                    {% for key, value in info.items() %}
-                        <li><strong>{{ key }}:</strong> {{ value }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <script>hideLoadingMessages();</script>
+        <div class="card">
+            <h2>Movie Information: {{ info['title'] }}</h2>
+            <ul class="movie-details">
+                {% for key, value in info.items() %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-            <div class="card">
-                <h2>Review Summary</h2>
-                <p>{{ summary }}</p>
-            </div>
+        <div class="card">
+            <h2>Review Summary</h2>
+            <p style="color: #39ac31;">{{ summary }}</p>
+        </div>
 
-            <div class="card">
-                <h2>Content-Based Recommendations</h2>
-                <ul class="recommendations">
-                    {% for movie in content_req_list %}
-                        <li>{{ movie }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="card">
+            <h2>Content-Based Recommendations</h2>
+            <ul class="recommendations">
+                {% for movie in content_req_list %}
+                    <li>{{ movie }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-            <div class="card">
-                <h2>User-Based Recommendations</h2>
-                <ul class="recommendations">
-                    {% for movie in user_req_list %}
-                        <li>{{ movie }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+        <div class="card">
+            <h2>User-Based Recommendations</h2>
+            <ul class="recommendations">
+                {% for movie in user_req_list %}
+                    <li>{{ movie }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+    {% endif %}
 </body>
 </html>
