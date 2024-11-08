@@ -137,6 +137,22 @@
             background-color: white;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .columns-container {
+            display: flex;
+            gap: 20px;
+        }
+        .left-column {
+            flex: 1;
+        }
+        .right-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         .card {
             background-color: #ffffff;
@@ -215,35 +231,44 @@
             hideLoadingMessages();
         </script>
         <div class="card">
-            <h2>Movie Information: {{ info['title'] }}</h2>
-            <ul class="movie-details">
-                {% for key, value in info.items() %}
-                    <li><strong>{{ key }}:</strong> {{ value }}</li>
-                {% endfor %}
-            </ul>
+            <h2>{{ info['original_title'] }}</h2>
+            <table class="movie-details" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Original Title:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['original_title'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Overview:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['overview'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Release Date:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['release_date'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Genres:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['genres'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Runtime:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['runtime'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Revenue:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['revenue'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Original Language:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['original_language'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Vote Average:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['vote_average'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Vote Count:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['vote_count'] }}</td></tr>
+            </table>
         </div>
-
-        <div class="card">
-            <h2>Review Summary</h2>
-            <p style="color: #39ac31;">{{ summary }}</p>
-        </div>
-
-        <div class="card">
-            <h2>Content-Based Recommendations</h2>
-            <ul class="recommendations">
-                {% for movie in content_req_list %}
-                    <li>{{ movie }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>User-Based Recommendations</h2>
-            <ul class="recommendations">
-                {% for movie in user_req_list %}
-                    <li>{{ movie }}</li>
-                {% endfor %}
-            </ul>
+        <div class="columns-container">
+            <div class="left-column">
+                <div class="card">
+                    <h2>Review Summary</h2>
+                    <p style="color: #39ac31;">{{ summary }}</p>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="card">
+                    <h2>Content-Based Recommendations</h2>
+                    <ul class="recommendations">
+                        {% for movie in content_req_list %}
+                            <li>{{ movie }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2>User-Based Recommendations</h2>
+                    <ul class="recommendations">
+                        {% for movie in user_req_list %}
+                            <li>{{ movie }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
     {% endif %}
