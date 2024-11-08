@@ -2,7 +2,7 @@ from header import *
 
 '''
 Author: Tina Nosrati
-Last Update: 10/13/2024
+Last Update: 11/8/2024
 
 Description: 
 This script will prepare general movie information
@@ -54,6 +54,9 @@ def get_movie_info(name):
         column_names = [desc[0] for desc in cur.description]     
         df = pd.DataFrame(rows, columns=column_names) 
         df = df.sample(frac=1).reset_index(drop=True) 
+        df = df.drop(['adult','belongs_to_collection',
+                      'id','imdb_id','popularity', 'poster_path', 'production_companies',       
+       'production_countries','spoken_languages', 'status','video',], axis=1)
         return df
     
     except OperationalError as e:
@@ -94,6 +97,39 @@ def find_movie_id(name):
         cur.close()
         conn.close()
 
+##########clean_dictionary##########
+'''
+input:
+data --> dictionary with values that may contain nested dictionaries as strings.
+
+output:
+A simplified dictionary with only inner values.
+
+Description:
+This function parses values that are lists of dictionaries in string form, extracting only the 'name' fields. 
+If parsing fails or the value isn't nested, it remains unchanged.
+'''
+
+def clean_dictionary(input_dict):
+    output_dict = {}
+    for key, value in input_dict.items():
+        # Check if the value is a string
+        if isinstance(value, str):
+            try:
+                # Safely evaluate the string to check if it's a list of dictionaries
+                parsed_value = ast.literal_eval(value)
+                # If it's a list of dictionaries, extract the 'name' values
+                if isinstance(parsed_value, list) and all(isinstance(item, dict) for item in parsed_value):
+                    output_dict[key] = [item.get('name') for item in parsed_value if 'name' in item]
+                else:
+                    output_dict[key] = value
+            except (ValueError, SyntaxError):
+                # If parsing fails, keep the original value
+                output_dict[key] = value
+        else:
+            output_dict[key] = value
+    return output_dict
+
 
 # main program
 if __name__ == "__main__":
@@ -102,5 +138,6 @@ if __name__ == "__main__":
     name="Jarhead"
     df = get_movie_info(name)
     info_dict = df.iloc[0].to_dict()
-    print(info_dict)
+    cleaned_data = clean_dictionary(info_dict)
+    print(cleaned_data)
     

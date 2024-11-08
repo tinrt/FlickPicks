@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from MovieData import get_movie_info
+from MovieData import get_movie_info,clean_dictionary
 from Review_Summary import generate_movie_summary
 from Content_req_test import recommend_movies as content_req
 from User_req import recommend_movies as user_req
@@ -30,6 +30,7 @@ def home():
 
                 # Create dictionary of movie information
                 info_dict = df.iloc[0].to_dict()
+                info_dict=clean_dictionary(info_dict)
 
                 # Generate review summary
                 summary = generate_movie_summary(name)

@@ -1,9 +1,9 @@
 '''
 Author: Tina Nosrati
-Last Update: 10/5/2024
+Last Update: 11/8/2024
 
 '''
-
+import ast
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
