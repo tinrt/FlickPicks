@@ -9,7 +9,7 @@ Author: Tina Nosrati
 Last Update: 10/14/2024
 
 Description: 
-This script will perform as the main pipline of the project
+This script will perform as the main pipeline of the project
 '''
 
 
