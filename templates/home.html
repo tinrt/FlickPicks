@@ -60,7 +60,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             hideLoadingMessages();
             const formInput = document.querySelector('input[type="text"]');
-            formInput.focus(); // Automatically focus on the text input field
+            formInput.focus(); 
             showInputLoadingGif(); // Show the input GIF immediately when returning from the error page
         });
     </script>
@@ -231,9 +231,9 @@
             hideLoadingMessages();
         </script>
         <div class="card">
-            <h2>{{ info['original_title'] }}</h2>
+            <h2>{{ 'boring movie no tagline' if info['tagline'] is none or info['tagline'] == 'NaN' else info['tagline'] }}</h2>
             <table class="movie-details" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Original Title:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['original_title'] }}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Original Title:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><a href="https://www.imdb.com/title/{{ info['imdb_id'] }}" target="_blank">{{ info['original_title'] }}</a></td></tr>
                 <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Overview:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['overview'] }}</td></tr>
                 <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Release Date:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['release_date'] }}</td></tr>
                 <tr><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;"><strong>Genres:</strong></td><td style="padding: 10px; border-bottom: 1px solid #f0f0f0;">{{ info['genres'] }}</td></tr>

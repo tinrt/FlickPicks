@@ -55,7 +55,7 @@ def get_movie_info(name):
         df = pd.DataFrame(rows, columns=column_names) 
         df = df.sample(frac=1).reset_index(drop=True) 
         df = df.drop(['adult','belongs_to_collection',
-                      'id','imdb_id','popularity', 'poster_path', 'production_companies',       
+                      'id','popularity', 'poster_path', 'production_companies',       
        'production_countries','spoken_languages', 'status','video',], axis=1)
         return df
     
