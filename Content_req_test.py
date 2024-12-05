@@ -105,7 +105,7 @@ Output: a list of recommended movies
 
 Description: 
 This function will get the loaded components of the recommendation model
-and returns top 5 movies simmilar to this movie
+and returns top 5 movies similar to this movie
 
 '''
 

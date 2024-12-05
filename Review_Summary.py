@@ -39,8 +39,8 @@ text --> string input to be summarized
 Output: A summary of the input text limited to 200 tokens
 
 Description: 
-This function uses a lightweight LLM to summarize a given string input.. This will be
-used for the summary of all reviews because it is caple of generating more tokens.
+This function uses a lightweight LLM to summarize a given string input. This will be
+used for the summary of all reviews because it is capable of generating more tokens.
 '''
 
 def summarize_review(text):

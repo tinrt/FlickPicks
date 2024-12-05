@@ -36,10 +36,10 @@ def call_database():
 Arguments:
 input:
 
-Output: A dataframe containing user movie raitings in the database
+Output: A dataframe containing user movie ratings in the database
 
 Description: 
-This function will return a dataframe of user movie raitings from the database
+This function will return a dataframe of user movie ratings from the database
 
 '''
 def get_user_data():
@@ -168,7 +168,7 @@ def find_movie_id(name):
 ##########recommend_movies##########
 '''
 input:
-movie_id --> id of the movie we are processing
+ --> id of the movie we are processing
 
 output: a list of movies recommended
 

@@ -100,7 +100,7 @@ def find_movie_id(name):
 ##########clean_dictionary##########
 '''
 input:
-data --> dictionary with values that may contain nested dictionaries as strings.
+input_dict --> dictionary with values that may contain nested dictionaries as strings.
 
 output:
 A simplified dictionary with only inner values.
