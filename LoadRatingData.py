@@ -7,7 +7,7 @@ Author: Tina Nosrati
 Last Update: 9/29/2024
 
 Description: 
-This script will load movie raiting data to the "raitings" table in database from the csv file "raitings.csv"
+This script will load movie rating data to the "ratings" table in database from the csv file "ratings.csv"
 
 '''
 
