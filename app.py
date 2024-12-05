@@ -8,13 +8,49 @@ import pickle
 import csv
 import datetime
 
+'''
+Author: Tina Nosrati
+Last Update: 12/5/2024
+
+Description: 
+This script will be the flask web app and the
+brain behind the user interface.
+'''
+
 app = Flask(__name__)
 
-# Function to correct user input
+
+##########correct_movie_name##########
+'''
+Arguments:
+input:
+
+movie_name --> user input to be processed  
+
+Output: title version of the input string
+
+Description: 
+This function is to correct user input
+
+'''
 def correct_movie_name(movie_name):
     return movie_name.title()
 
-# Function to log errors to a CSV file
+##########log_error##########
+'''
+Arguments:
+input:
+
+error_message --> error text
+user_input --> the user input that caused error
+error_code --> (None by default) the error code  
+
+Output: writing in log file
+
+Description: 
+This function is to log program errors
+
+'''
 def log_error(error_message, user_input, error_code=None):
     log_file_path = os.path.expanduser('~/error_log.csv')
     file_exists = os.path.isfile(log_file_path)
