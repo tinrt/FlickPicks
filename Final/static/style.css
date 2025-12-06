@@ -1,0 +1,119 @@
+/* ===== Global ===== */
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#eef2f7;
+}
+
+/* Container */
+.container{
+    width:85%;
+    max-width:950px;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Titles */
+.title{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:25px;
+    color:#23374d;
+}
+
+.sub-title{
+    font-size:22px;
+    font-weight:600;
+    margin-top:25px;
+    margin-bottom:12px;
+}
+
+/* Input Section */
+.form-box{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.input-wrap input{
+    width:260px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #bcc8d6;
+    font-size:15px;
+    margin-bottom:12px;
+    transition:.2s;
+}
+.input-wrap input:focus{
+    border-color:#007bff;
+    box-shadow:0 0 6px rgba(0,123,255,0.3);
+    outline:none;
+}
+
+.btn{
+    padding:10px 18px;
+    background:#0078ff;
+    color:white;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.2s;
+}
+.btn:hover{ background:#005fcc; }
+
+/* ===== Table ===== */
+.movie-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:15px;
+}
+.movie-table thead{
+    background:#2c3e50;
+    color:white;
+}
+.movie-table th, .movie-table td{
+    padding:12px;
+    border-bottom:1px solid #e5e8ed;
+    text-align:left;
+}
+.movie-table tr:nth-child(even){ background:#f8fafc; }
+.movie-table tr:hover{ background:#e9f3ff; }
+
+/* Text styling */
+.movie-title{ font-weight:bold; color:#0d4c92; }
+.genre{ color:#374f67; }
+.overview{ max-width:400px; line-height:1.45em; }
+
+/* ===== Rating Bars ===== */
+.rating-cell{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+.rating-bar{
+    width:120px;
+    height:8px;
+    background:#d6dfeb;
+    border-radius:50px;
+    overflow:hidden;
+}
+.rating-fill{
+    height:100%;
+    border-radius:50px;
+}
+
+.high{ background:#37c56b; }  /* rating >= 4 */
+.mid{ background:#ffc639; }   /* rating >= 3 */
+.low{ background:#ff8c42; }   /* rating >= 2 */
+.bad{ background:#e74c3c; }   /* rating < 2 */
+
+.rating-text{
+    font-weight:600;
+    min-width:40px;
+    display:block;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1 class="title">Movie Recommendation System</h1>
+
+    <!-- User Input -->
+    <form method="post" class="form-box">
+
+        <div class="input-wrap">
+            <input type="text" id="user_input" name="user_input" list="users"
+                   placeholder="Type or select a user ID...">
+
+            <datalist id="users">
+                {% for u in users %}
+                <option value="{{u}}"></option>
+                {% endfor %}
+            </datalist>
+        </div>
+
+        <button type="submit" class="btn">Recommend</button>
+    </form>
+
+
+    <!-- Results -->
+    {% if recs %}
+    <h2 class="sub-title">Recommended Movies</h2>
+
+    <table class="movie-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Genres</th>
+                <th>Overview</th>
+                <th>Rating</th>
+                <th>Release Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for m in recs %}
+        {% set rating = m.popularity %} <!-- vote_average stored in popularity -->
+
+        <tr>
+            <td class="movie-title">{{ m.title }}</td>
+            <td class="genre">{{ m.genres }}</td>
+            <td class="overview">{{ m.overview[:200] }}...</td>
+
+            <!-- Rating ONLY number now -->
+            <td class="rating-number">{{ "%.1f"|format(rating) }}</td>
+
+            <td>{{ m.release_date }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
